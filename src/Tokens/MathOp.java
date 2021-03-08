@@ -15,6 +15,7 @@ public class MathOp extends Token{
                 put("-=", 7);
                 put("/=", 8);
                 put("*=", 9);
+                put(".", 10);
             }};
 
 

@@ -1,0 +1,6 @@
+func int : <- int , int
+{
+    var int:  = 10;
+    var int:  = 0;
+
+}
