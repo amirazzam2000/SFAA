@@ -51,21 +51,22 @@ public class Analyzer {
             put('7', number);
             put('8', number);
             put('9', number);
-
+            put('.', number);
         }};
 
         number.setNext(n);
-        number.getNext().get('0').setValue(new Constants("0"));
-        number.getNext().get('1').setValue(new Constants("1"));
-        number.getNext().get('2').setValue(new Constants("2"));
-        number.getNext().get('3').setValue(new Constants("3"));
-        number.getNext().get('4').setValue(new Constants("4"));
-        number.getNext().get('5').setValue(new Constants("5"));
-        number.getNext().get('6').setValue(new Constants("6"));
-        number.getNext().get('7').setValue(new Constants("7"));
-        number.getNext().get('8').setValue(new Constants("8"));
-        number.getNext().get('9').setValue(new Constants("9"));
-
+        //TODO: add an empty constructor to constant
+        number.getNext().get('0').setValue(new Constants("0", true));
+        number.getNext().get('1').setValue(new Constants("1", true));
+        number.getNext().get('2').setValue(new Constants("2", true));
+        number.getNext().get('3').setValue(new Constants("3", true));
+        number.getNext().get('4').setValue(new Constants("4", true));
+        number.getNext().get('5').setValue(new Constants("5", true));
+        number.getNext().get('6').setValue(new Constants("6", true));
+        number.getNext().get('7').setValue(new Constants("7", true));
+        number.getNext().get('8').setValue(new Constants("8", true));
+        number.getNext().get('9').setValue(new Constants("9", true));
+        number.getNext().get('.').setValue(new Constants("10", true));
 
 
         trie.getNext().put('0', number);
@@ -78,6 +79,7 @@ public class Analyzer {
         trie.getNext().put('7', number);
         trie.getNext().put('8', number);
         trie.getNext().put('9', number);
+        trie.getNext().put('.', number);
 
 
     }
@@ -174,6 +176,7 @@ public class Analyzer {
                         aux.add(currentNode.getValue());
                         currentNode = trie;
                     }
+                    //TODO: if it is a number then add it to the constant table
                     else{
                         throw new AnalyzerExceptions("Unknown Token");
                     }
@@ -182,9 +185,26 @@ public class Analyzer {
             else{
                 //if we are on a leaf
                 if (currentNode.getValue() != null){
-                    aux.add(currentNode.getValue());
-                    currentNode = trie;
-                    i--;
+                    //if it is a #
+                    if (currentNode.getValue() instanceof Symbol && currentNode.getValue().getId() == 3){
+                        // get variable name
+                        StringBuilder varName = new StringBuilder();
+                        for (; i < arr.length; i++) {
+                            c = arr[i];
+                            varName.append(c);
+                        }
+                        //add it to ConVar
+
+                        //add the variable token
+                        aux.add(new Variables(varName.toString()));
+                        break;
+                    }
+                    // if it's any other token then add it
+                    else {
+                        aux.add(currentNode.getValue());
+                        currentNode = trie;
+                        i--;
+                    }
                 }else{
                     //if we can't move on, but we're not at a leaf, throw an
                     // exception
@@ -203,13 +223,8 @@ public class Analyzer {
         }
     }
 
-    //TODO: Search -> return (Token) Value
-    //check for variables
-    //||    || word constants
-    // ||   || floats
-    // comments
-    //when defining variable, we should use a hashtag to ensure that we're
-    // properly detecting errors
-    //build a comment and content system.
+
+
+    //TODO: comments
 
 }

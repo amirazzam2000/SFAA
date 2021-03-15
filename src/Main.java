@@ -11,6 +11,7 @@ public class Main {
         a.addVar("variable");
         File file = new File("src/Resouces/test.sfaa");
         try {
+            //get the code we want to process
             a.getTokens(file);
         } catch (AnalyzerExceptions analyzerExceptions) {
             analyzerExceptions.printStackTrace();
